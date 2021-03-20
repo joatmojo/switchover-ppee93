@@ -5,7 +5,7 @@
 
   tasks:
     - name: cek efm cluster-status
-    command: /usr/edb/efm-4.1/bin/efm cluster-status efm
-    register: cluster
+      command: /usr/edb/efm-4.1/bin/efm cluster-status efm
+      register: cluster
 
     - debug: var=cluster.stdout_lines
