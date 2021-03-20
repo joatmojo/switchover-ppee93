@@ -1,0 +1,88 @@
+---
+- name: cek status cluster before swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: cek efm cluster-status
+      command: /usr/edb/efm-4.1/bin/efm cluster-status efm
+      register: cluster
+
+    - debug: var=cluster.stdout_lines
+
+- name: Do switchover cluster
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: switchover node
+      command: /usr/edb/efm-4.1/bin/efm promote efm -switchover
+      register: switchnow
+
+    - debug: var=switchnow.stdout_lines
+
+- name: copy config
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: copy slave config
+      copy:
+        src: ./files/postgresql-slave.conf
+        dest: /data/PostgresPlus/9.3AS/data/postgresql.conf
+        owner: enterprisedb
+        group: enterprisedb
+
+- name: copy config
+  hosts: node2
+  become: true
+
+  tasks:
+    - name: copy master config
+      copy:
+        src: ./files/postgresql-master.conf
+        dest: /data/PostgresPlus/9.3AS/data/postgresql.conf
+        owner: enterprisedb
+        group: enterprisedb
+
+- name: restart ppee service
+  hosts: nodeall
+  become: true
+
+  tasks:
+    - name: restart ppee 9.3
+      command: /etc/init.d/ppas-9.3 restart
+      register: restartppee
+
+    - debug: var=restartppee.stdout_lines
+    
+- name: restart cluster service
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: restart efm service
+      service:
+        name: edb-efm-4.1
+        state: restarted
+
+- name: restart pgpool service
+  hosts: pgpool
+  become: true
+
+  tasks:
+    - name: restart pgpool2 service
+      service:
+        name: pgpool
+        state: restarted
+
+- name: cek status cluster after swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: cek efm cluster-status
+      command: /usr/edb/efm-4.1/bin/efm cluster-status efm
+      register: cluster
+
+    - debug: var=cluster.stdout_lines                

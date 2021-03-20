@@ -1,6 +1,6 @@
 ---
 - name: cek status cluster
-  hosts: all
+  hosts: node1
   become: true
 
   tasks:

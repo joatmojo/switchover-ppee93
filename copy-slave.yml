@@ -4,9 +4,9 @@
   become: true
 
   tasks:
-    - name: copy master config
+    - name: copy slave config
       copy:
         src: ./files/postgresql-slave.conf
-        dest: /home/atmo/postgresql-mojo-slave.conf
+        dest: /data/PostgresPlus/9.3AS/data/postgresql.conf
         owner: enterprisedb
         group: enterprisedb

@@ -4,5 +4,9 @@ ppaslab1
 [node2]
 ppaslab2
 
+[nodeall]
+ppaslab1
+ppaslab2
+
 [pgpool]
 labatmo3

@@ -7,6 +7,6 @@
     - name: copy master config
       copy:
         src: ./files/postgresql-master.conf
-        dest: /home/atmo/postgresql-mojo.conf
+        dest: /data/PostgresPlus/9.3AS/data/postgresql.conf
         owner: enterprisedb
         group: enterprisedb
