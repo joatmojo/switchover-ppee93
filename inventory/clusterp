@@ -1,3 +1,7 @@
+[all:vars]
+curr_master_node=node1
+curr_slave_node=node2
+
 [nodeall]
 ppaslab1
 ppaslab2
