@@ -1,0 +1,13 @@
+---
+- name: restart pgpool service
+  hosts: pgpool
+  become: true
+
+  tasks:
+    - name: restart pgpool2 service
+      service:
+        name: pgpool
+        state: restarted
+      register: pgpoolstat
+
+    - debug: var=pgpoolstat.stdout_lines
