@@ -1,0 +1,11 @@
+---
+- name: restart ppee service
+  hosts: all
+  become: true
+
+  tasks:
+    - name: restart ppee 9.3
+      command: /etc/init.d/ppas-9.3 restart
+      register: cluster
+
+    - debug: var=cluster.stdout_lines
