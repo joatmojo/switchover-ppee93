@@ -1,6 +1,6 @@
 ---
 - name: cek status cluster before swicthover
-  hosts: node1
+  hosts: node2
   become: true
 
   tasks:
@@ -11,7 +11,7 @@
     - debug: var=cluster.stdout_lines
 
 - name: Do switchover cluster
-  hosts: node1
+  hosts: node2
   become: true
 
   tasks:
@@ -22,7 +22,7 @@
     - debug: var=switchnow.stdout_lines
 
 - name: copy config slave
-  hosts: node2
+  hosts: node1
   become: true
 
   tasks:
@@ -34,7 +34,7 @@
         group: enterprisedb
 
 - name: copy config master
-  hosts: node1
+  hosts: node2
   become: true
 
   tasks:
@@ -57,7 +57,7 @@
     - debug: var=restartppee.stdout_lines
     
 - name: restart cluster service
-  hosts: node2
+  hosts: node1
   become: true
 
   tasks:
@@ -77,7 +77,7 @@
         state: restarted
 
 - name: cek status cluster after swicthover
-  hosts: node1
+  hosts: node2
   become: true
 
   tasks:
