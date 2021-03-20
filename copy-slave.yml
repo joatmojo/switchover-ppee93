@@ -1,0 +1,7 @@
+---
+- name: copy slave-conf
+  copy:
+    src: ./files/postgresql-slave.conf
+    dest: /home/atmo/postgresql-mojo-slave.conf
+    owner: enterprisedb
+    group: enterprisedb

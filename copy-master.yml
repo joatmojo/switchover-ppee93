@@ -1,0 +1,7 @@
+---
+- name: copy master-conf
+  copy:
+    src: ./files/postgresql-master.conf
+    dest: /home/atmo/postgresql-mojo.conf
+    owner: enterprisedb
+    group: enterprisedb
