@@ -1,6 +1,6 @@
 ---
 - name: cek status cluster
-  hosts: {{ curr_master_node }}
+  hosts: node1
   become: true
 
   tasks:
