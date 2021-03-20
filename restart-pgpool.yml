@@ -8,6 +8,3 @@
       service:
         name: pgpool
         state: restarted
-      register: pgpoolstat
-
-    - debug: var=pgpoolstat.stdout_lines
