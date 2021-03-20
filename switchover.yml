@@ -21,8 +21,8 @@
 
     - debug: var=switchnow.stdout_lines
 
-- name: copy config
-  hosts: node1
+- name: copy config slave
+  hosts: node2
   become: true
 
   tasks:
@@ -33,8 +33,8 @@
         owner: enterprisedb
         group: enterprisedb
 
-- name: copy config
-  hosts: node2
+- name: copy config master
+  hosts: node1
   become: true
 
   tasks:
@@ -57,7 +57,7 @@
     - debug: var=restartppee.stdout_lines
     
 - name: restart cluster service
-  hosts: node1
+  hosts: node2
   become: true
 
   tasks:
