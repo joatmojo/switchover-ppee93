@@ -1,7 +1,12 @@
 ---
-- name: copy slave-conf
-  copy:
-    src: ./files/postgresql-slave.conf
-    dest: /home/atmo/postgresql-mojo-slave.conf
-    owner: enterprisedb
-    group: enterprisedb
+- name: copy config
+  hosts: all
+  become: true
+
+  tasks:
+    - name: copy master config
+      copy:
+        src: ./files/postgresql-slave.conf
+        dest: /home/atmo/postgresql-mojo-slave.conf
+        owner: enterprisedb
+        group: enterprisedb
