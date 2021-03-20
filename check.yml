@@ -1,11 +1,11 @@
 ---
 - name: cek status cluster
-    hosts: all
-    become: true
+  hosts: all
+  become: true
 
-    tasks:
-        - name: cek efm cluster-status
-            command: /usr/edb/efm-4.1/bin/efm cluster-status efm
-            register: cluster
+  tasks:
+    - name: cek efm cluster-status
+    command: /usr/edb/efm-4.1/bin/efm cluster-status efm
+    register: cluster
 
-        - debug: var=cluster.stdout_lines
+    - debug: var=cluster.stdout_lines
