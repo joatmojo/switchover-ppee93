@@ -9,3 +9,4 @@
       register: cluster
 
     - debug: var=cluster.stdout_lines
+    
