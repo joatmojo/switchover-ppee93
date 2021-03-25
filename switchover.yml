@@ -54,13 +54,13 @@
   become: true
 
   tasks:
-    - name: cek efm cluster-status
+    - name: cek efm cluster-status after
       command: /usr/edb/efm-4.1/bin/efm cluster-status efm
       register: cluster
 
     - debug: var=cluster.stdout_lines     
     
-    - name: cek pgpool cluster
+    - name: cek pgpool cluster after
       command: /data/PostgresPlus/9.3AS/bin/psql -U enterprisedb -d edb -h 192.168.131.138 -c 'show pool_nodes;' -p 9444
       register: pgpoollast
       
