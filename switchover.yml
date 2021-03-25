@@ -35,20 +35,19 @@
         group: root
         mode: 0700
 
-    - name: export PCPCPPASSFILE
-      ansible.builtin.shell: export PCPPASSFILE=/data/pgpool/pcppass
+    - name: copy attach shell
+      copy:
+        src: ./files/pgpool_attach.sh
+        dest: /data/pgpool/pgpool_attach.sh
+        owner: root
+        group: root
+        mode: 0755        
 
-    - name: attach node0
-      command: /usr/bin/pcp_attach_node -U enterprisedb -h 192.168.131.138 -p 9898 -w -n 0
-      register: attachnode0
+    - name: attach pgpool
+      command: /data/pgpool/pgpool_attach.sh
+      register: attachnode
 
-    - debug: var=attachnode0.stdout_lines
-
-    - name: attach node1
-      command: /usr/bin/pcp_attach_node -U enterprisedb -h 192.168.131.138 -p 9898 -w -n 1 
-      register: attachnode1
-      
-    - debug: var=attachnode1.stdout_lines
+    - debug: var=attachnode.stdout_lines
 
 - name: cek status cluster after swicthover
   hosts: node1
