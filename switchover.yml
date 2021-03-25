@@ -1,0 +1,68 @@
+---
+- name: cek status efm cluster before swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: cek efm cluster-status
+      command: /usr/edb/efm-4.1/bin/efm cluster-status efm
+      register: efm
+
+    - debug: var=efm.stdout_lines
+
+    - name: cek pgpool cluster
+      command: /data/PostgresPlus/9.3AS/bin/psql -U enterprisedb -d edb -h 192.168.131.138 -c 'show pool_nodes;' -p 9444
+      register: pgpool
+
+    - debug: var=pgpool.stdout_lines
+
+    - name: switchover node
+      command: /usr/edb/efm-4.1/bin/efm promote efm -switchover
+      register: switchnow
+
+    - debug: var=switchnow.stdout_lines
+
+- name: copy pcppass and execute attach node
+  hosts: pgpool
+  become: true
+
+  tasks:
+    - name: copy master config
+      copy:
+        src: ./files/pcppass
+        dest: /data/pgpool/pcppass
+        owner: root
+        group: root
+        mode: 0700
+
+    - name: export PCPCPPASSFILE
+      command: export PCPPASSFILE=/data/pgpool/pcppass
+
+    - name: attach node0
+      command: /usr/bin/pcp_attach_node -U enterprisedb -h 192.168.131.138 -p 9898 -w -n 0
+      register: attachnode0
+
+    - debug: var=attachnode0.stdout_lines
+
+    - name: attach node1
+      command: /usr/bin/pcp_attach_node -U enterprisedb -h 192.168.131.138 -p 9898 -w -n 1 
+      register: attachnode1
+      
+    - debug: var=attachnode1.stdout_lines
+
+- name: cek status cluster after swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: cek efm cluster-status
+      command: /usr/edb/efm-4.1/bin/efm cluster-status efm
+      register: cluster
+
+    - debug: var=cluster.stdout_lines     
+    
+    - name: cek pgpool cluster
+      command: /data/PostgresPlus/9.3AS/bin/psql -U enterprisedb -d edb -h 192.168.131.138 -c 'show pool_nodes;' -p 9444
+      register: pgpoollast
+      
+    - debug: var=pgpoollast.stdout_lines
