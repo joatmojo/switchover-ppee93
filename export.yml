@@ -1,6 +1,6 @@
 ---
 - name: cek status efm cluster before swicthover
-  hosts: node1
+  hosts: pgpool
   become: true
 
   tasks:
