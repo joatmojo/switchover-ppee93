@@ -1,0 +1,22 @@
+---
+- name: cek status efm cluster before swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: copy master config
+      copy:
+        src: ./files/pcppass
+        dest: /data/pgpool/pcppass
+        owner: root
+        group: root
+        mode: 0700
+
+    - name: export PCPCPPASSFILE
+      ansible.builtin.shell: export PCPPASSFILE=/data/pgpool/pcppass
+
+    - name: echo pcppassfile
+      ansible.builtin.shell: echo $PCPPASSFILE
+      register: echo
+
+    - debug: var=echo.stdout_lines       
