@@ -36,7 +36,7 @@
         mode: 0700
 
     - name: export PCPCPPASSFILE
-      command: export PCPPASSFILE=/data/pgpool/pcppass
+      ansible.builtin.shell: export PCPPASSFILE=/data/pgpool/pcppass
 
     - name: attach node0
       command: /usr/bin/pcp_attach_node -U enterprisedb -h 192.168.131.138 -p 9898 -w -n 0
