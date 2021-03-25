@@ -14,8 +14,6 @@
 
     - name: export PCPCPPASSFILE
       ansible.builtin.shell: export PCPPASSFILE=/data/pgpool/pcppass
-
-    - name: echo pcppassfile
       ansible.builtin.shell: echo $PCPPASSFILE
       register: echo
 
