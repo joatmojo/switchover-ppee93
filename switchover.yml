@@ -27,6 +27,11 @@
   become: true
 
   tasks:
+    - name: restart pgpool
+      service:
+        name: pgpool
+        state: restarted
+
     - name: copy master config
       copy:
         src: ./files/pcppass
