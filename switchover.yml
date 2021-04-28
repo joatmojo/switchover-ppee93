@@ -5,7 +5,7 @@
 
   vars_prompt:
 
-    - name: Password for user atmo:
+    - name: "Password for user atmo:"
       prompt: "{{ pgpassword }}"  
 
   tasks:
