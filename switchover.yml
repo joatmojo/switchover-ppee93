@@ -11,7 +11,7 @@
     - debug: var=efm.stdout_lines
 
     - name: cek pgpool cluster
-      command: /data/PostgresPlus/9.3AS/bin/psql -U enterprisedb -d edb -h 192.168.131.33 -c 'show pool_nodes;' -p 9444
+      command: /data/PostgresPlus/9.3AS/bin/psql -U atmo -d mojo -h 192.168.131.33 -c 'show pool_nodes;' -p 9444
       register: pgpool
 
     - debug: var=pgpool.stdout_lines
@@ -99,7 +99,7 @@
     - debug: var=cluster.stdout_lines     
     
     - name: cek pgpool cluster after
-      command: /data/PostgresPlus/9.3AS/bin/psql -U enterprisedb -d edb -h 192.168.131.33 -c 'show pool_nodes;' -p 9444
+      command: /data/PostgresPlus/9.3AS/bin/psql -U atmo -d mojo -h 192.168.131.33 -c 'show pool_nodes;' -p 9444
       register: pgpoollast
       
     - debug: var=pgpoollast.stdout_lines
