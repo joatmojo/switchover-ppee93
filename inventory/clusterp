@@ -13,4 +13,11 @@ ppaslab1
 ppaslab2
 
 [pgpool]
-labatmo1
+carita1
+carita2
+
+[pgpoolnode1]
+carita1
+
+[pgpoolnode2]
+carita2
