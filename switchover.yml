@@ -29,7 +29,7 @@
   tasks:
     - name: restart pgpool node1
       service:
-        name: pgpool
+        name: pgpool2
         state: restarted
 
     - name: copy pcp config node1
@@ -61,7 +61,7 @@
   tasks:
     - name: restart pgpool node2
       service:
-        name: pgpool
+        name: pgpool2
         state: restarted
 
     - name: copy pcpass node2
