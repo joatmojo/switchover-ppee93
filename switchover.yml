@@ -3,11 +3,6 @@
   hosts: node1
   become: true
 
-  vars_prompt:
-
-    - name: "Password for user atmo:"
-      prompt: "{{ pgpassword }}"  
-
   tasks:
     - name: cek efm cluster-status
       command: /usr/edb/efm-4.1/bin/efm cluster-status efm
