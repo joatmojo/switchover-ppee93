@@ -1,0 +1,105 @@
+---
+- name: cek status efm cluster before swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: cek efm cluster-status
+      command: /usr/edb/efm-4.0/bin/efm cluster-status efm
+      register: efm
+
+    - debug: var=efm.stdout_lines
+
+    - name: cek pgpool cluster
+      command: /data/PostgresPlus/9.3AS/bin/psql -U atmo -d mojo -h 192.168.131.33 -c 'show pool_nodes;' -p 9444
+      register: pgpool
+
+    - debug: var=pgpool.stdout_lines
+
+    - name: switchover node
+      command: /usr/edb/efm-4.0/bin/efm promote efm -switchover
+      register: switchnow
+
+    - debug: var=switchnow.stdout_lines
+
+- name: restart and copy pcppass scripts pgpool node1
+  hosts: pgpoolnode1
+  become: true
+
+  tasks:
+    - name: restart pgpool node1
+      service:
+        name: pgpool2
+        state: restarted
+
+    - name: copy pcp config node1
+      copy:
+        src: ./files/pcppass
+        dest: /data/pgpool/pcppass
+        owner: root
+        group: root
+        mode: 0700
+
+    - name: copy attach shell node1
+      copy:
+        src: ./files/pgpool_attach_node1.sh
+        dest: /data/pgpool/pgpool_attach.sh
+        owner: root
+        group: root
+        mode: 0755        
+
+    - name: attach pgpool node1
+      command: /data/pgpool/pgpool_attach.sh
+      register: attachnode
+
+    - debug: var=attachnode.stdout_lines
+
+- name: restart and copy pcppass scripts pgpool node2
+  hosts: pgpoolnode2
+  become: true
+
+  tasks:
+    - name: restart pgpool node2
+      service:
+        name: pgpool2
+        state: restarted
+
+    - name: copy pcpass node2
+      copy:
+        src: ./files/pcppass
+        dest: /data/pgpool/pcppass
+        owner: root
+        group: root
+        mode: 0700
+
+    - name: copy attach shell node2
+      copy:
+        src: ./files/pgpool_attach_node2.sh
+        dest: /data/pgpool/pgpool_attach.sh
+        owner: root
+        group: root
+        mode: 0755        
+
+    - name: attach pgpool node2
+      command: /data/pgpool/pgpool_attach.sh
+      register: attachnode
+
+    - debug: var=attachnode.stdout_lines
+
+
+- name: cek status cluster after swicthover
+  hosts: node1
+  become: true
+
+  tasks:
+    - name: cek efm cluster-status after
+      command: /usr/edb/efm-4.0/bin/efm cluster-status efm
+      register: cluster
+
+    - debug: var=cluster.stdout_lines     
+    
+    - name: cek pgpool cluster after
+      command: /data/PostgresPlus/9.3AS/bin/psql -U atmo -d mojo -h 192.168.131.33 -c 'show pool_nodes;' -p 9444
+      register: pgpoollast
+      
+    - debug: var=pgpoollast.stdout_lines
